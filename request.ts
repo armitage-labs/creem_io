@@ -8,12 +8,6 @@ export const createRequest = (apiKey: string, baseUrl: string): RequestFn => {
     data?: unknown,
     queryParams?: Record<string, string | number | boolean | undefined>
   ): Promise<T> => {
-    console.log("API Key", apiKey);
-    console.log("Base URL", baseUrl);
-    console.log("Method", method);
-    console.log("Path", path);
-    console.log("Data", data);
-    console.log("Query Params", queryParams);
     const headers = {
       "Content-Type": "application/json",
       "x-api-key": apiKey,
@@ -34,8 +28,6 @@ export const createRequest = (apiKey: string, baseUrl: string): RequestFn => {
       headers,
       body: data ? JSON.stringify(data) : undefined,
     });
-
-    console.log("Response", response);
 
     if (!response.ok) {
       let errorMessage = response.statusText;

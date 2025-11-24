@@ -17,6 +17,90 @@ import type { Product } from "./products";
 import type { NormalizedSubscription, Subscription } from "./subscriptions";
 import type { Transaction } from "./transactions";
 
+// ============================================================================
+// REFUND TYPES
+// ============================================================================
+
+/**
+ * Refund entity
+ */
+export interface Refund {
+  /** String representing the object's type */
+  object: "refund";
+  /** Unique identifier for the object */
+  id: string;
+  /** Environment mode: test, prod, or sandbox */
+  mode: "test" | "prod" | "sandbox";
+  /** Status of the refund */
+  status: "pending" | "succeeded" | "canceled" | "failed";
+  /** The refunded amount in cents. 1000 = $10.00 */
+  refundAmount: number;
+  /** Three-letter ISO currency code, in uppercase */
+  refundCurrency: string;
+  /** Reason for the refund */
+  reason: "duplicate" | "fraudulent" | "requested_by_customer" | "other";
+  /** The transaction associated with the refund */
+  transaction: Transaction;
+  /** The checkout associated with the refund */
+  checkout?: Checkout | string;
+  /** The order associated with the refund */
+  order?: string;
+  /** The subscription associated with the refund */
+  subscription?: Subscription | string;
+  /** The customer associated with the refund */
+  customer?: Customer | string;
+  /** Creation date as timestamp */
+  createdAt: number;
+}
+
+/**
+ * Normalized refund entity with expanded relations
+ */
+export interface NormalizedRefund extends Omit<Refund, "transaction"> {
+  /** The transaction is always expanded */
+  transaction: Transaction;
+}
+
+// ============================================================================
+// DISPUTE TYPES
+// ============================================================================
+
+/**
+ * Dispute entity
+ */
+export interface Dispute {
+  /** String representing the object's type */
+  object: "dispute";
+  /** Unique identifier for the object */
+  id: string;
+  /** Environment mode: test, prod, or sandbox */
+  mode: "test" | "prod" | "sandbox";
+  /** The disputed amount in cents. 1000 = $10.00 */
+  amount: number;
+  /** Three-letter ISO currency code, in uppercase */
+  currency: string;
+  /** The transaction associated with the dispute */
+  transaction: Transaction;
+  /** The checkout associated with the dispute */
+  checkout?: Checkout | string;
+  /** The order associated with the dispute */
+  order?: string;
+  /** The subscription associated with the dispute */
+  subscription?: Subscription | string;
+  /** The customer associated with the dispute */
+  customer?: Customer | string;
+  /** Creation date as timestamp */
+  createdAt: number;
+}
+
+/**
+ * Normalized dispute entity with expanded relations
+ */
+export interface NormalizedDispute extends Omit<Dispute, "transaction"> {
+  /** The transaction is always expanded */
+  transaction: Transaction;
+}
+
 // Re-export types for convenience
 export type {
   Checkout,
@@ -59,6 +143,30 @@ export type CheckoutCompletedEvent = {
   /** Webhook event creation timestamp */
   webhookCreatedAt: number;
 } & NormalizedCheckout;
+
+/**
+ * Refund created event callback parameter.
+ */
+export type RefundCreatedEvent = {
+  /** Webhook event type identifier */
+  webhookEventType: "refund.created";
+  /** Unique webhook event ID */
+  webhookId: string;
+  /** Webhook event creation timestamp */
+  webhookCreatedAt: number;
+} & NormalizedRefund;
+
+/**
+ * Dispute created event callback parameter.
+ */
+export type DisputeCreatedEvent = {
+  /** Webhook event type identifier */
+  webhookEventType: "dispute.created";
+  /** Unique webhook event ID */
+  webhookId: string;
+  /** Webhook event creation timestamp */
+  webhookCreatedAt: number;
+} & NormalizedDispute;
 
 /**
  * Subscription event callback parameter.
@@ -131,6 +239,16 @@ export interface WebhookOptions {
    * }
    */
   onCheckoutCompleted?: (data: CheckoutCompletedEvent) => void | Promise<void>;
+
+  /**
+   * Called when a refund is created.
+   */
+  onRefundCreated?: (data: RefundCreatedEvent) => void | Promise<void>;
+
+  /**
+   * Called when a dispute is created.
+   */
+  onDisputeCreated?: (data: DisputeCreatedEvent) => void | Promise<void>;
 
   /**
    * Called when a subscription becomes active.
