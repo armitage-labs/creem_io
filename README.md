@@ -30,19 +30,19 @@ Install the package using your preferred package manager:
 #### npm
 
 ```bash
-npm install creem
+npm install creem_io
 ```
 
 #### yarn
 
 ```bash
-yarn add creem
+yarn add creem_io
 ```
 
 #### pnpm
 
 ```bash
-pnpm install creem
+pnpm install creem_io
 ```
 
 ### Requirements
@@ -57,7 +57,7 @@ pnpm install creem
 ### 1. Initialize the SDK
 
 ```typescript
-import { createCreem } from "creem";
+import { createCreem } from "creem_io";
 
 const creem = createCreem({
   apiKey: "your_api_key_here",
@@ -92,7 +92,7 @@ console.log(checkout.checkoutUrl);
 
 ```typescript
 import express from "express";
-import { createCreem } from "creem";
+import { createCreem } from "creem_io";
 
 const app = express();
 const creem = createCreem({
@@ -139,7 +139,7 @@ That's it! You now have Creem payments integrated. 🎉
 ### Initialization
 
 ```typescript
-import { createCreem } from "creem";
+import { createCreem } from "creem_io";
 
 const creem = createCreem({
   apiKey: string;          // Required: Your Creem API key
@@ -518,7 +518,7 @@ app.post("/webhook", async (c) => {
 
 ```typescript
 import { NextRequest } from "next/server";
-import { createCreem } from "creem";
+import { createCreem } from "creem_io";
 
 const creem = createCreem({
   apiKey: process.env.CREEM_API_KEY!,
@@ -617,7 +617,7 @@ import type {
   SubscriptionEvent,
   GrantAccessContext,
   RevokeAccessContext,
-} from "creem";
+} from "creem_io";
 ```
 
 All API responses are fully typed, and the SDK automatically converts snake_case to camelCase for better TypeScript/JavaScript experience.
