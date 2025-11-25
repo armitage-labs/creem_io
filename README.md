@@ -145,7 +145,6 @@ const creem = createCreem({
   apiKey: string;          // Required: Your Creem API key
   testMode?: boolean;      // Optional: Use test environment (default: false)
   webhookSecret?: string;  // Optional: For webhook signature verification
-  baseUrl?: string;        // Optional: Custom API base URL
 });
 ```
 
@@ -515,6 +514,89 @@ app.post("/webhook", async (c) => {
 });
 ```
 
+**Next.js App Router**
+
+```typescript
+import { NextRequest } from "next/server";
+import { createCreem } from "creem";
+
+const creem = createCreem({
+  apiKey: process.env.CREEM_API_KEY!,
+  webhookSecret: process.env.CREEM_WEBHOOK_SECRET!,
+});
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.text();
+    const signature = req.headers.get("creem-signature")!;
+
+    await creem.webhooks.handleEvents(body, signature, {
+      onCheckoutCompleted: async (data) => {
+        // Handle checkout
+      },
+      onGrantAccess: async (context) => {
+        // Grant access
+      },
+    });
+
+    return new Response("OK", { status: 200 });
+  } catch (error) {
+    return new Response("Invalid signature", { status: 400 });
+  }
+}
+```
+
+---
+
+### Access Management
+
+The `onGrantAccess` and `onRevokeAccess` callbacks provide a simple way to manage user access for subscription-based products.
+
+#### `onGrantAccess`
+
+Called when a user should be granted access. This happens when:
+
+- Subscription becomes **active** (after payment)
+- Subscription enters **trialing** period (free trial)
+- Subscription payment is **paid** (renewal)
+
+```typescript
+onGrantAccess: async ({ reason, customer, product, metadata }) => {
+  const userId = metadata?.userId as string;
+
+  // Grant access in your database
+  await db.user.update({
+    where: { id: userId },
+    data: { subscriptionActive: true },
+  });
+
+  console.log(`Granted ${reason} to ${customer.email}`);
+};
+```
+
+#### `onRevokeAccess`
+
+Called when a user's access should be revoked. This happens when:
+
+- Subscription is **paused** (manually by user or admin)
+- Subscription is **expired** (trial ended or canceled subscription period ended)
+
+```typescript
+onRevokeAccess: async ({ reason, customer, product, metadata }) => {
+  const userId = metadata?.userId as string;
+
+  // Revoke access in your database
+  await db.user.update({
+    where: { id: userId },
+    data: { subscriptionActive: false },
+  });
+
+  console.log(`Revoked access (${reason}) from ${customer.email}`);
+};
+```
+
+> **⚠️ Important:** Both callbacks may be called multiple times for the same user/subscription. Always implement these as **idempotent operations** (safe to call repeatedly).
+
 ---
 
 ## TypeScript Support
@@ -609,6 +691,59 @@ metadata: {
 }
 ```
 
+### 5. Test in Test Mode
+
+Always test your integration in test mode first:
+
+```typescript
+const creem = createCreem({
+  apiKey: process.env.CREEM_API_KEY!,
+  testMode: true, // Test mode
+});
+```
+
+### 6. Handle Errors Gracefully
+
+Webhook handlers should handle errors and return appropriate responses:
+
+```typescript
+onGrantAccess: async (context) => {
+  try {
+    await grantUserAccess(context);
+  } catch (error) {
+    console.error("Failed to grant access:", error);
+    // Don't throw - webhook will retry
+  }
+};
+```
+
+---
+
+## Webhook Configuration
+
+### Setting Up Webhooks in Creem Dashboard
+
+1. Go to your [Creem Dashboard](https://dashboard.creem.io)
+2. Navigate to **Developers** → **Webhooks**
+3. Click **Add Endpoint**
+4. Enter your webhook URL: `https://yourdomain.com/api/webhook/creem`
+5. Select the events you want to receive
+6. Copy the **Webhook Secret** to your environment variables
+
+### Testing Webhooks Locally
+
+Use a tool like [ngrok](https://ngrok.com/) to expose your local server:
+
+```bash
+ngrok http 3000
+```
+
+Then use the ngrok URL in your Creem webhook settings:
+
+```
+https://abc123.ngrok.io/api/webhook/creem
+```
+
 ---
 
 ## Framework Adapters
@@ -643,4 +778,3 @@ MIT © [Creem](https://creem.io)
 ## Authors
 
 Built with ❤️ by the [Creem](https://creem.io) team.
-
