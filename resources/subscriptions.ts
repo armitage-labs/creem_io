@@ -22,10 +22,14 @@ export const subscriptionsResource = (request: RequestFn) => ({
     // TODO: Return object is not compatible with types. Check.
     required(params.subscriptionId, "subscriptionId");
     isString(params.subscriptionId, "subscriptionId");
+    isString(params.mode, "mode");
 
     return request<Subscription>(
       "POST",
-      `/v1/subscriptions/${params.subscriptionId}/cancel`
+      `/v1/subscriptions/${params.subscriptionId}/cancel`,
+      {
+        mode: params.mode,
+      }
     );
   },
   update: (params: UpdateSubscriptionRequest) => {
