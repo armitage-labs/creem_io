@@ -281,6 +281,7 @@ const subscription = await creem.subscriptions.get({
 ```typescript
 const subscription = await creem.subscriptions.cancel({
   subscriptionId: "sub_abc123",
+  mode: "scheduled" // or "immediate"
 });
 ```
 
@@ -765,7 +766,7 @@ We welcome contributions! Please open an issue or submit a pull request.
 - 📧 **Email**: support@creem.io
 - 💬 **Discord**: [Join our community](https://discord.gg/q3GKZs92Av)
 - 📚 **Documentation**: [docs.creem.io](https://docs.creem.io)
-- 🐛 **Issues**: [GitHub Issues](https://github.com/creem-io/creem-sdk/issues)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/armitage-labs/creem_io/issues)
 
 ---
 

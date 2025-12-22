@@ -94,6 +94,8 @@ export interface GetSubscriptionRequest {
 export interface CancelSubscriptionRequest {
   /** The subscription ID to cancel */
   subscriptionId: string;
+  /** The cancellation mode */
+  mode?: "immediate" | "scheduled";
 }
 
 /**
