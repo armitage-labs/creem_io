@@ -11,7 +11,7 @@ export const createRequest = (apiKey: string, baseUrl: string): RequestFn => {
     const headers = {
       "Content-Type": "application/json",
       "x-api-key": apiKey,
-      "User-Agent": "creem-sdk-node/0.1.0",
+      "User-Agent": "creem-sdk-node/0.5.0",
     };
 
     const url = new URL(`${baseUrl}${path}`);
