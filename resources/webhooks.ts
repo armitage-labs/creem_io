@@ -350,6 +350,17 @@ export const webhooksResource = (secret?: string) => {
           break;
         }
 
+        case "subscription.scheduled_cancel": {
+          const subscriptionData = normalizedObject as NormalizedSubscription;
+          await handlers.onSubscriptionScheduledCancel?.({
+            webhookEventType: event.eventType,
+            webhookId: event.id,
+            webhookCreatedAt: event.created_at,
+            ...subscriptionData,
+          } as SubscriptionEvent<"subscription.scheduled_cancel">);
+          break;
+        }
+
         default:
           // Unknown event type - silently ignore or log
           console.warn(`Unknown webhook event type: ${event.eventType}`);

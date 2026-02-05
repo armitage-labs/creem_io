@@ -4,6 +4,8 @@ import {
   CancelSubscriptionRequest,
   UpdateSubscriptionRequest,
   UpgradeSubscriptionRequest,
+  PauseSubscriptionRequest,
+  ResumeSubscriptionRequest,
   Subscription,
 } from "../types";
 import { required, isString, isArray } from "../validate";
@@ -67,6 +69,24 @@ export const subscriptionsResource = (request: RequestFn) => ({
         product_id: params.productId,
         update_behavior: params.updateBehavior,
       }
+    );
+  },
+  pause: (params: PauseSubscriptionRequest) => {
+    required(params.subscriptionId, "subscriptionId");
+    isString(params.subscriptionId, "subscriptionId");
+
+    return request<Subscription>(
+      "POST",
+      `/v1/subscriptions/${params.subscriptionId}/pause`
+    );
+  },
+  resume: (params: ResumeSubscriptionRequest) => {
+    required(params.subscriptionId, "subscriptionId");
+    isString(params.subscriptionId, "subscriptionId");
+
+    return request<Subscription>(
+      "POST",
+      `/v1/subscriptions/${params.subscriptionId}/resume`
     );
   },
 });

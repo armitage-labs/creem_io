@@ -319,6 +319,15 @@ export interface WebhookOptions {
   ) => void | Promise<void>;
 
   /**
+   * Called when a subscription is scheduled for cancellation.
+   * This fires when a user requests cancellation at period end (not immediate).
+   * The subscription status will be "scheduled_cancel" until the period ends.
+   */
+  onSubscriptionScheduledCancel?: (
+    data: SubscriptionEvent<"subscription.scheduled_cancel">
+  ) => void | Promise<void>;
+
+  /**
    * Called when a user should be granted access to the platform.
    * This is triggered for: active, trialing, and paid subscriptions.
    *
