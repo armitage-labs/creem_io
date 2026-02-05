@@ -36,3 +36,5 @@ export function createCreem({
     webhooks: webhooksResource(webhookSecret),
   };
 }
+
+export * from "./types";

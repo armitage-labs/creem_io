@@ -141,3 +141,19 @@ export interface UpgradeSubscriptionRequest {
     | "proration-charge"
     | "proration-none";
 }
+
+/**
+ * Request payload for pausing a subscription
+ */
+export interface PauseSubscriptionRequest {
+  /** The subscription ID to pause */
+  subscriptionId: string;
+}
+
+/**
+ * Request payload for resuming a subscription
+ */
+export interface ResumeSubscriptionRequest {
+  /** The subscription ID to resume */
+  subscriptionId: string;
+}
