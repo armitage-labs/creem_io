@@ -72,8 +72,7 @@ export interface Subscription extends BaseEntity {
  * Subscription entity as returned in subscription webhook events.
  * The product and customer are always expanded (full objects, never just IDs).
  */
-export interface NormalizedSubscription
-  extends Omit<Subscription, "product" | "customer"> {
+export interface NormalizedSubscription extends Omit<Subscription, "product" | "customer"> {
   /** The product associated with the subscription (always expanded in webhooks) */
   product: Product;
   /** The customer who owns the subscription (always expanded in webhooks) */
@@ -121,10 +120,7 @@ export interface UpdateSubscriptionRequest {
   /** The subscription items to update */
   items?: SubscriptionItemUpdate[];
   /** How to handle the update */
-  updateBehavior?:
-    | "proration-charge-immediately"
-    | "proration-charge"
-    | "proration-none";
+  updateBehavior?: "proration-charge-immediately" | "proration-charge" | "proration-none";
 }
 
 /**
@@ -136,10 +132,7 @@ export interface UpgradeSubscriptionRequest {
   /** The new product ID */
   productId: string;
   /** How to handle the upgrade */
-  updateBehavior?:
-    | "proration-charge-immediately"
-    | "proration-charge"
-    | "proration-none";
+  updateBehavior?: "proration-charge-immediately" | "proration-charge" | "proration-none";
 }
 
 /**

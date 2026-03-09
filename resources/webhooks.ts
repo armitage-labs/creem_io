@@ -72,11 +72,7 @@ function generateSignature(payload: string, secret: string): string {
 /**
  * Verify webhook signature using constant-time comparison
  */
-function verifySignature(
-  payload: string,
-  signature: string,
-  secret: string
-): boolean {
+function verifySignature(payload: string, signature: string, secret: string): boolean {
   const expectedSignature = generateSignature(payload, secret);
   const signatureBuffer = Buffer.from(signature);
   const expectedBuffer = Buffer.from(expectedSignature);
@@ -152,18 +148,15 @@ export const webhooksResource = (secret?: string) => {
     handleEvents: async (
       payload: string | Buffer,
       signature: string,
-      handlers: Omit<WebhookOptions, "webhookSecret">
+      handlers: Omit<WebhookOptions, "webhookSecret">,
     ): Promise<void> => {
       // 1. Validate webhook secret
       if (!secret) {
-        throw new Error(
-          "Webhook secret not configured. Pass `webhookSecret` to `createCreem`."
-        );
+        throw new Error("Webhook secret not configured. Pass `webhookSecret` to `createCreem`.");
       }
 
       // 2. Convert payload to string
-      const payloadString =
-        typeof payload === "string" ? payload : payload.toString("utf8");
+      const payloadString = typeof payload === "string" ? payload : payload.toString("utf8");
 
       // 3. Verify signature
       if (!verifySignature(payloadString, signature, secret)) {

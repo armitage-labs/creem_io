@@ -24,9 +24,7 @@ export const customersResource = (request: RequestFn) => ({
     isString(params.email, "email");
 
     if (!params.customerId && !params.email) {
-      throw new Error(
-        "Either 'customerId' or 'email' must be provided to get a customer."
-      );
+      throw new Error("Either 'customerId' or 'email' must be provided to get a customer.");
     }
 
     return request<Customer>("GET", "/v1/customers", undefined, {

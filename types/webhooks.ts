@@ -7,11 +7,7 @@
  * No external dependencies required - just TypeScript!
  */
 
-import type {
-  Checkout,
-  NestedSubscriptionInCheckout,
-  NormalizedCheckout,
-} from "./checkout";
+import type { Checkout, NestedSubscriptionInCheckout, NormalizedCheckout } from "./checkout";
 import type { Customer } from "./customer";
 import type { Product } from "./products";
 import type { NormalizedSubscription, Subscription } from "./subscriptions";
@@ -258,65 +254,53 @@ export interface WebhookOptions {
    *   console.log(`${customer.email} subscribed to ${product.name}`);
    * }
    */
-  onSubscriptionActive?: (
-    data: SubscriptionEvent<"subscription.active">
-  ) => void | Promise<void>;
+  onSubscriptionActive?: (data: SubscriptionEvent<"subscription.active">) => void | Promise<void>;
 
   /**
    * Called when a subscription is in trialing state.
    */
   onSubscriptionTrialing?: (
-    data: SubscriptionEvent<"subscription.trialing">
+    data: SubscriptionEvent<"subscription.trialing">,
   ) => void | Promise<void>;
 
   /**
    * Called when a subscription is canceled.
    */
   onSubscriptionCanceled?: (
-    data: SubscriptionEvent<"subscription.canceled">
+    data: SubscriptionEvent<"subscription.canceled">,
   ) => void | Promise<void>;
 
   /**
    * Called when a subscription is paid.
    */
-  onSubscriptionPaid?: (
-    data: SubscriptionEvent<"subscription.paid">
-  ) => void | Promise<void>;
+  onSubscriptionPaid?: (data: SubscriptionEvent<"subscription.paid">) => void | Promise<void>;
 
   /**
    * Called when a subscription has expired.
    */
-  onSubscriptionExpired?: (
-    data: SubscriptionEvent<"subscription.expired">
-  ) => void | Promise<void>;
+  onSubscriptionExpired?: (data: SubscriptionEvent<"subscription.expired">) => void | Promise<void>;
 
   /**
    * Called when a subscription is unpaid.
    */
-  onSubscriptionUnpaid?: (
-    data: SubscriptionEvent<"subscription.unpaid">
-  ) => void | Promise<void>;
+  onSubscriptionUnpaid?: (data: SubscriptionEvent<"subscription.unpaid">) => void | Promise<void>;
 
   /**
    * Called when a subscription is updated.
    */
-  onSubscriptionUpdate?: (
-    data: SubscriptionEvent<"subscription.update">
-  ) => void | Promise<void>;
+  onSubscriptionUpdate?: (data: SubscriptionEvent<"subscription.update">) => void | Promise<void>;
 
   /**
    * Called when a subscription is past due.
    */
   onSubscriptionPastDue?: (
-    data: SubscriptionEvent<"subscription.past_due">
+    data: SubscriptionEvent<"subscription.past_due">,
   ) => void | Promise<void>;
 
   /**
    * Called when a subscription is paused.
    */
-  onSubscriptionPaused?: (
-    data: SubscriptionEvent<"subscription.paused">
-  ) => void | Promise<void>;
+  onSubscriptionPaused?: (data: SubscriptionEvent<"subscription.paused">) => void | Promise<void>;
 
   /**
    * Called when a subscription is scheduled for cancellation.
@@ -324,7 +308,7 @@ export interface WebhookOptions {
    * The subscription status will be "scheduled_cancel" until the period ends.
    */
   onSubscriptionScheduledCancel?: (
-    data: SubscriptionEvent<"subscription.scheduled_cancel">
+    data: SubscriptionEvent<"subscription.scheduled_cancel">,
   ) => void | Promise<void>;
 
   /**

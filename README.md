@@ -100,34 +100,30 @@ const creem = createCreem({
   webhookSecret: process.env.CREEM_WEBHOOK_SECRET!,
 });
 
-app.post(
-  "/webhook/creem",
-  express.raw({ type: "application/json" }),
-  async (req, res) => {
-    try {
-      const signature = req.headers["creem-signature"] as string;
+app.post("/webhook/creem", express.raw({ type: "application/json" }), async (req, res) => {
+  try {
+    const signature = req.headers["creem-signature"] as string;
 
-      await creem.webhooks.handleEvents(req.body, signature, {
-        onCheckoutCompleted: async ({ customer, product }) => {
-          console.log(`${customer?.email} purchased ${product.name}`);
-        },
-        onGrantAccess: async ({ reason, customer, metadata }) => {
-          // Grant user access to your platform
-          console.log(`Grant access: ${reason} to ${customer.email}`);
-        },
-        onRevokeAccess: async ({ reason, customer, metadata }) => {
-          // Revoke user access from your platform
-          console.log(`Revoke access: ${reason} from ${customer.email}`);
-        },
-      });
+    await creem.webhooks.handleEvents(req.body, signature, {
+      onCheckoutCompleted: async ({ customer, product }) => {
+        console.log(`${customer?.email} purchased ${product.name}`);
+      },
+      onGrantAccess: async ({ reason, customer, metadata }) => {
+        // Grant user access to your platform
+        console.log(`Grant access: ${reason} to ${customer.email}`);
+      },
+      onRevokeAccess: async ({ reason, customer, metadata }) => {
+        // Revoke user access from your platform
+        console.log(`Revoke access: ${reason} from ${customer.email}`);
+      },
+    });
 
-      res.status(200).send("OK");
-    } catch (error) {
-      console.error("Webhook error:", error);
-      res.status(400).send("Invalid signature");
-    }
+    res.status(200).send("OK");
+  } catch (error) {
+    console.error("Webhook error:", error);
+    res.status(400).send("Invalid signature");
   }
-);
+});
 ```
 
 That's it! You now have Creem payments integrated. 🎉
@@ -281,7 +277,7 @@ const subscription = await creem.subscriptions.get({
 ```typescript
 const subscription = await creem.subscriptions.cancel({
   subscriptionId: "sub_abc123",
-  mode: "scheduled" // or "immediate"
+  mode: "scheduled", // or "immediate"
 });
 ```
 
@@ -457,24 +453,16 @@ await creem.webhooks.handleEvents(payload, signature, {
 **Express**
 
 ```typescript
-app.post(
-  "/webhook",
-  express.raw({ type: "application/json" }),
-  async (req, res) => {
-    try {
-      await creem.webhooks.handleEvents(
-        req.body,
-        req.headers["creem-signature"],
-        {
-          /* handlers */
-        }
-      );
-      res.status(200).send("OK");
-    } catch (error) {
-      res.status(400).send("Invalid signature");
-    }
+app.post("/webhook", express.raw({ type: "application/json" }), async (req, res) => {
+  try {
+    await creem.webhooks.handleEvents(req.body, req.headers["creem-signature"], {
+      /* handlers */
+    });
+    res.status(200).send("OK");
+  } catch (error) {
+    res.status(400).send("Invalid signature");
   }
-);
+});
 ```
 
 **Fastify**
@@ -482,13 +470,9 @@ app.post(
 ```typescript
 fastify.post("/webhook", async (request, reply) => {
   try {
-    await creem.webhooks.handleEvents(
-      request.rawBody,
-      request.headers["creem-signature"],
-      {
-        /* handlers */
-      }
-    );
+    await creem.webhooks.handleEvents(request.rawBody, request.headers["creem-signature"], {
+      /* handlers */
+    });
     reply.code(200).send("OK");
   } catch (error) {
     reply.code(400).send("Invalid signature");

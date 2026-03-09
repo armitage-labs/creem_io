@@ -34,12 +34,7 @@ export interface Product extends BaseEntity {
   /** Billing method: recurring or onetime */
   billingType: "recurring" | "onetime";
   /** Billing period */
-  billingPeriod:
-    | "every-month"
-    | "every-three-months"
-    | "every-six-months"
-    | "every-year"
-    | "once";
+  billingPeriod: "every-month" | "every-three-months" | "every-six-months" | "every-year" | "once";
   /** Status of the product */
   status: "active" | "archived";
   /** Tax calculation mode */
@@ -132,12 +127,7 @@ export interface CreateProductRequest {
   /** Billing method: recurring or onetime */
   billingType: "recurring" | "onetime";
   /** Billing period (required when billingType is "recurring") */
-  billingPeriod?:
-    | "every-month"
-    | "every-three-months"
-    | "every-six-months"
-    | "every-year"
-    | "once";
+  billingPeriod?: "every-month" | "every-three-months" | "every-six-months" | "every-year" | "once";
   /** Tax calculation mode */
   taxMode?: "inclusive" | "exclusive";
   /** Tax category for the product */

@@ -4,15 +4,9 @@ export function required(value: unknown, name: string): void {
   }
 }
 
-export function requiredWhen(
-  value: unknown,
-  name: string,
-  condition: string
-): void {
+export function requiredWhen(value: unknown, name: string, condition: string): void {
   if (value === undefined || value === null || value === "") {
-    throw new Error(
-      `Missing required parameter: ${name}. ${name} is required when ${condition}`
-    );
+    throw new Error(`Missing required parameter: ${name}. ${name} is required when ${condition}`);
   }
 }
 
