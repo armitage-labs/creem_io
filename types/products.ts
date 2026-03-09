@@ -46,7 +46,7 @@ export interface Product extends BaseEntity {
   /** The URL to redirect after successful payment */
   defaultSuccessUrl?: string;
   /** Custom fields configured for the product */
-  customField?: CustomFieldDefinition[];
+  customFields?: CustomFieldDefinition[];
   /** Creation date of the product */
   createdAt: Date;
   /** Last updated date of the product */
