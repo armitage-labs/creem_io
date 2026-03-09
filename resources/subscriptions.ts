@@ -26,13 +26,9 @@ export const subscriptionsResource = (request: RequestFn) => ({
     isString(params.subscriptionId, "subscriptionId");
     isString(params.mode, "mode");
 
-    return request<Subscription>(
-      "POST",
-      `/v1/subscriptions/${params.subscriptionId}/cancel`,
-      {
-        mode: params.mode,
-      }
-    );
+    return request<Subscription>("POST", `/v1/subscriptions/${params.subscriptionId}/cancel`, {
+      mode: params.mode,
+    });
   },
   update: (params: UpdateSubscriptionRequest) => {
     // Items || updateBehavior should be required. Check.
@@ -41,19 +37,15 @@ export const subscriptionsResource = (request: RequestFn) => ({
     isArray(params.items, "items");
     isString(params.updateBehavior, "updateBehavior");
 
-    return request<Subscription>(
-      "POST",
-      `/v1/subscriptions/${params.subscriptionId}`,
-      {
-        items: params.items?.map((item) => ({
-          id: item.id,
-          product_id: item.productId,
-          price_id: item.priceId,
-          units: item.units,
-        })),
-        update_behavior: params.updateBehavior,
-      }
-    );
+    return request<Subscription>("POST", `/v1/subscriptions/${params.subscriptionId}`, {
+      items: params.items?.map((item) => ({
+        id: item.id,
+        product_id: item.productId,
+        price_id: item.priceId,
+        units: item.units,
+      })),
+      update_behavior: params.updateBehavior,
+    });
   },
   upgrade: (params: UpgradeSubscriptionRequest) => {
     required(params.subscriptionId, "subscriptionId");
@@ -62,31 +54,21 @@ export const subscriptionsResource = (request: RequestFn) => ({
     isString(params.productId, "productId");
     isString(params.updateBehavior, "updateBehavior");
 
-    return request<Subscription>(
-      "POST",
-      `/v1/subscriptions/${params.subscriptionId}/upgrade`,
-      {
-        product_id: params.productId,
-        update_behavior: params.updateBehavior,
-      }
-    );
+    return request<Subscription>("POST", `/v1/subscriptions/${params.subscriptionId}/upgrade`, {
+      product_id: params.productId,
+      update_behavior: params.updateBehavior,
+    });
   },
   pause: (params: PauseSubscriptionRequest) => {
     required(params.subscriptionId, "subscriptionId");
     isString(params.subscriptionId, "subscriptionId");
 
-    return request<Subscription>(
-      "POST",
-      `/v1/subscriptions/${params.subscriptionId}/pause`
-    );
+    return request<Subscription>("POST", `/v1/subscriptions/${params.subscriptionId}/pause`);
   },
   resume: (params: ResumeSubscriptionRequest) => {
     required(params.subscriptionId, "subscriptionId");
     isString(params.subscriptionId, "subscriptionId");
 
-    return request<Subscription>(
-      "POST",
-      `/v1/subscriptions/${params.subscriptionId}/resume`
-    );
+    return request<Subscription>("POST", `/v1/subscriptions/${params.subscriptionId}/resume`);
   },
 });

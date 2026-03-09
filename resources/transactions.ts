@@ -23,17 +23,12 @@ export const transactionsResource = (request: RequestFn) => ({
     isNumber(params.page, "page");
     isNumber(params.limit, "limit");
 
-    return request<TransactionList>(
-      "GET",
-      "/v1/transactions/search",
-      undefined,
-      {
-        customer_id: params.customerId,
-        order_id: params.orderId,
-        product_id: params.productId,
-        page_number: params.page,
-        page_size: params.limit,
-      }
-    );
+    return request<TransactionList>("GET", "/v1/transactions/search", undefined, {
+      customer_id: params.customerId,
+      order_id: params.orderId,
+      product_id: params.productId,
+      page_number: params.page,
+      page_size: params.limit,
+    });
   },
 });

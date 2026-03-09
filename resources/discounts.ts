@@ -14,9 +14,7 @@ export const discountsResource = (request: RequestFn) => ({
     isString(params.discountCode, "discountCode");
 
     if (!params.discountId && !params.discountCode) {
-      throw new Error(
-        "Either 'discountId' or 'discountCode' must be provided to get a discount."
-      );
+      throw new Error("Either 'discountId' or 'discountCode' must be provided to get a discount.");
     }
 
     return request<Discount>("GET", "/v1/discounts", undefined, {
@@ -62,9 +60,6 @@ export const discountsResource = (request: RequestFn) => ({
     required(params.discountId, "discountId");
     isString(params.discountId, "discountId");
 
-    return request<Discount>(
-      "DELETE",
-      `/v1/discounts/${params.discountId}/delete`
-    );
+    return request<Discount>("DELETE", `/v1/discounts/${params.discountId}/delete`);
   },
 });

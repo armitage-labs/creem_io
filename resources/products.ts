@@ -6,14 +6,7 @@ import {
   Product,
   ProductList,
 } from "../types";
-import {
-  required,
-  requiredWhen,
-  isString,
-  isNumber,
-  isBoolean,
-  isArray,
-} from "../validate";
+import { required, requiredWhen, isString, isNumber, isBoolean, isArray } from "../validate";
 
 export const productsResource = (request: RequestFn) => ({
   list: (params: ListProductsRequest = {}) => {
@@ -52,11 +45,7 @@ export const productsResource = (request: RequestFn) => ({
 
     // Validation logic: billingPeriod is required when billingType is "recurring"
     if (params.billingType === "recurring") {
-      requiredWhen(
-        params.billingPeriod,
-        "billingPeriod",
-        "billingType is 'recurring'"
-      );
+      requiredWhen(params.billingPeriod, "billingPeriod", "billingType is 'recurring'");
       isString(params.billingPeriod, "billingPeriod");
     }
 
@@ -64,10 +53,7 @@ export const productsResource = (request: RequestFn) => ({
     isString(params.taxCategory, "taxCategory");
     isString(params.defaultSuccessUrl, "defaultSuccessUrl");
     isArray(params.customField, "customField");
-    isBoolean(
-      params.abandonedCartRecoveryEnabled,
-      "abandonedCartRecoveryEnabled"
-    );
+    isBoolean(params.abandonedCartRecoveryEnabled, "abandonedCartRecoveryEnabled");
 
     return request<Product>("POST", "/v1/products", {
       name: params.name,

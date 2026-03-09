@@ -14,14 +14,8 @@ interface CreemOptions {
   testMode?: boolean;
 }
 
-export function createCreem({
-  apiKey,
-  webhookSecret,
-  testMode = false,
-}: CreemOptions) {
-  const baseUrl = testMode
-    ? "https://test-api.creem.io"
-    : "https://api.creem.io";
+export function createCreem({ apiKey, webhookSecret, testMode = false }: CreemOptions) {
+  const baseUrl = testMode ? "https://test-api.creem.io" : "https://api.creem.io";
 
   const request = createRequest(apiKey, baseUrl);
 

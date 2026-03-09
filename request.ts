@@ -6,7 +6,7 @@ export const createRequest = (apiKey: string, baseUrl: string): RequestFn => {
     method: "GET" | "POST" | "PUT" | "DELETE",
     path: string,
     data?: unknown,
-    queryParams?: Record<string, string | number | boolean | undefined>
+    queryParams?: Record<string, string | number | boolean | undefined>,
   ): Promise<T> => {
     const headers = {
       "Content-Type": "application/json",

@@ -81,8 +81,7 @@ export interface Checkout extends BaseEntity {
  * Subscription entity as nested in checkout.completed events.
  * Note: In checkout events, the nested subscription has product/customer as ID strings.
  */
-export interface NestedSubscriptionInCheckout
-  extends Omit<Subscription, "product" | "customer"> {
+export interface NestedSubscriptionInCheckout extends Omit<Subscription, "product" | "customer"> {
   /** The product ID (string, not expanded in nested subscription) */
   product: string;
   /** The customer ID (string, not expanded in nested subscription) */
@@ -94,8 +93,10 @@ export interface NestedSubscriptionInCheckout
  * Product and customer are always expanded.
  * Subscription is also expanded but has product/customer as strings inside it.
  */
-export interface NormalizedCheckout
-  extends Omit<Checkout, "product" | "customer" | "subscription"> {
+export interface NormalizedCheckout extends Omit<
+  Checkout,
+  "product" | "customer" | "subscription"
+> {
   /** The product associated with the checkout (always expanded in webhooks) */
   product: Product;
   /** The customer associated with the checkout (always expanded in webhooks) */

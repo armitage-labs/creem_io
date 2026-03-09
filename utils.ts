@@ -10,4 +10,3 @@ export function toCamelCase(obj: any): any {
   }
   return obj;
 }
-
