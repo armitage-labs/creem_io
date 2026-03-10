@@ -89,17 +89,13 @@ describe.skipIf(!hasCredentials())("products (integration)", () => {
       price: 500,
       currency: "USD",
       billingType: "onetime",
-      customField: [
-        { type: "text", key: "company", label: "Company", optional: true },
-      ],
+      customField: [{ type: "text", key: "company", label: "Company", optional: true }],
     });
 
     // Create checkout passing customFields values
     const checkout = await creem.checkouts.create({
       productId: product.id,
-      customFields: [
-        { type: "text", key: "company", label: "Company", optional: true },
-      ],
+      customFields: [{ type: "text", key: "company", label: "Company", optional: true }],
     });
 
     expect(checkout).toHaveProperty("id");

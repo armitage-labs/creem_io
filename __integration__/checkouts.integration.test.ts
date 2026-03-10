@@ -27,9 +27,7 @@ describe.skipIf(!hasCredentials())("checkouts (integration)", () => {
   it("creates a checkout with customFields", async () => {
     const checkout = await creem.checkouts.create({
       productId: ONETIME_PRODUCT_ID,
-      customFields: [
-        { type: "text", key: "company", label: "Company Name", optional: true },
-      ],
+      customFields: [{ type: "text", key: "company", label: "Company Name", optional: true }],
     });
 
     expect(checkout).toHaveProperty("id");

@@ -29,7 +29,9 @@ describe("requiredWhen", () => {
   });
 
   it("passes for valid values", () => {
-    expect(() => requiredWhen("monthly", "billingPeriod", "billingType is 'recurring'")).not.toThrow();
+    expect(() =>
+      requiredWhen("monthly", "billingPeriod", "billingType is 'recurring'"),
+    ).not.toThrow();
   });
 });
 

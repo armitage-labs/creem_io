@@ -4,7 +4,11 @@ import { webhooksResource } from "../resources/webhooks";
 
 const TEST_SECRET = "whsec_test_secret_123";
 
-function makeEvent(eventType: string, objectType: string, extraFields: Record<string, unknown> = {}) {
+function makeEvent(
+  eventType: string,
+  objectType: string,
+  extraFields: Record<string, unknown> = {},
+) {
   return {
     id: "evt_123",
     eventType,
@@ -36,7 +40,9 @@ describe("webhooks", () => {
       const webhooks = webhooksResource(TEST_SECRET);
       const payload = JSON.stringify(makeEvent("checkout.completed", "checkout"));
 
-      await expect(webhooks.handleEvents(payload, "bad_sig", {})).rejects.toThrow("Invalid webhook signature");
+      await expect(webhooks.handleEvents(payload, "bad_sig", {})).rejects.toThrow(
+        "Invalid webhook signature",
+      );
     });
 
     it("rejects tampered payload", async () => {
@@ -45,7 +51,9 @@ describe("webhooks", () => {
       const signature = sign(payload, TEST_SECRET);
       const tampered = payload.replace("evt_123", "evt_999");
 
-      await expect(webhooks.handleEvents(tampered, signature, {})).rejects.toThrow("Invalid webhook signature");
+      await expect(webhooks.handleEvents(tampered, signature, {})).rejects.toThrow(
+        "Invalid webhook signature",
+      );
     });
   });
 
@@ -126,7 +134,11 @@ describe("webhooks", () => {
     });
 
     it("routes subscription.scheduled_cancel to onSubscriptionScheduledCancel", async () => {
-      await testEventRouting("subscription.scheduled_cancel", "subscription", "onSubscriptionScheduledCancel");
+      await testEventRouting(
+        "subscription.scheduled_cancel",
+        "subscription",
+        "onSubscriptionScheduledCancel",
+      );
     });
   });
 
@@ -194,8 +206,12 @@ describe("webhooks", () => {
     it("calls onGrantAccess before the specific event handler", async () => {
       const webhooks = webhooksResource(TEST_SECRET);
       const callOrder: string[] = [];
-      const onGrantAccess = vi.fn(() => { callOrder.push("grant"); });
-      const onSubscriptionActive = vi.fn(() => { callOrder.push("active"); });
+      const onGrantAccess = vi.fn(() => {
+        callOrder.push("grant");
+      });
+      const onSubscriptionActive = vi.fn(() => {
+        callOrder.push("active");
+      });
       const payload = JSON.stringify(makeEvent("subscription.active", "subscription"));
       const signature = sign(payload, TEST_SECRET);
 
